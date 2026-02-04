@@ -3,298 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coletor - Registro Eletrônico de Frequência</title>
+    <title>Registro Eletrônico de Frequência - Goiânia</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+        :root {
+            --bg-verde: #3d8c5a;
+            --bg-tela: #d8e5d8;
+            --bg-tabela: #e6f0e6;
+            --border-color: #7a9c7a;
+            --btn-amarelo: #fdfd66;
+            --btn-vermelho: #ff4d4d;
+            --btn-ciano: #66ffff;
+            --relogio-azul: #5ed3f3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
 
         body {
-            background-color: #222;
+            background-color: #333;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
             padding: 10px;
         }
 
-        #monitor-virtual {
+        #sistema-container {
             width: 100%;
-            max-width: 1024px; /* Mantém o tamanho original em telas grandes */
-            background-color: #d8e5d8;
-            border: 1px solid #555;
-            min-height: 650px;
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            max-width: 1100px;
+            background-color: var(--bg-tela);
+            border: 2px solid #000;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        /* Cabeçalho Responsivo */
+        /* Cabeçalho */
         header {
-            background-color: #3d8c5a; 
+            background-color: var(--bg-verde);
             color: white;
-            padding: 10px 15px;
-            display: flex;
-            flex-wrap: wrap; /* Permite quebra de linha no mobile */
-            justify-content: space-between;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
-            border-bottom: 2px solid #2d6a44;
-            gap: 10px;
+            border-bottom: 1px solid #000;
         }
 
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-placeholder { 
+            width: 50px; height: 50px; background: white; 
+            border-radius: 4px; display: flex; align-items: center; justify-content: center;
+            font-size: 8px; color: #333; font-weight: bold; text-align: center;
         }
+        .header-title { text-align: center; font-weight: bold; text-transform: uppercase; font-size: 1.1rem; }
+        .ip-info { font-size: 12px; font-weight: bold; text-align: right; }
 
-        .brasao-frame {
-            background-color: white;
-            padding: 5px;
-            border-radius: 4px;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .brasao-frame img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        .texto-topo { font-weight: bold; font-size: 14px; line-height: 1.1; }
-        .titulo-principal { font-size: 18px; font-weight: bold; text-transform: uppercase; text-align: center; }
-
-        /* Tabela Adaptável */
-        .tabela-servidor {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #e6f0e6;
-        }
-
-        .tabela-servidor td {
-            border: 1px solid #b0c4b0;
-            padding: 8px 10px;
-            font-size: 13px;
-        }
-
-        .label-cinza { background-color: #d1dfd1; width: 110px; font-weight: bold; }
-        
-        input[type="text"] {
-            border: 1px solid #555;
-            padding: 5px;
-            width: 100%; /* Ocupa o espaço da célula */
-            max-width: 160px;
-            font-weight: bold;
+        /* Relógio e Data */
+        .relogio-bar {
+            display: grid;
+            grid-template-columns: 1fr 200px;
             background-color: #fff;
         }
-
-        /* Relógio */
-        .relogio-container {
-            background-color: #5ed3f3;
-            width: 100%;
-            text-align: center;
+        .empty-space { background-color: var(--bg-tabela); border: 1px solid var(--border-color); }
+        .clock-box { 
+            background-color: var(--relogio-azul); 
+            padding: 10px; text-align: center; 
+            border: 1px solid var(--border-color);
             color: #003366;
-            padding: 10px;
         }
+        #hora-v { font-size: 24px; font-weight: 900; display: block; }
+        #data-v { font-size: 14px; font-weight: bold; }
 
-        #hora-v { font-size: 28px; font-weight: 900; display: block; }
-        #data-v { font-size: 16px; font-weight: bold; }
+        /* Info Servidor */
+        .info-table { width: 100%; border-collapse: collapse; background: var(--bg-tabela); }
+        .info-table td { border: 1px solid var(--border-color); padding: 5px 8px; font-size: 12px; height: 32px; }
+        .label { background-color: #c0d1c0; width: 100px; font-weight: bold; }
+        input[type="text"] { width: 100%; max-width: 150px; border: 1px solid #777; padding: 2px; }
 
         /* Divisores */
-        .faixa-divisor {
-            background-color: #bccabc;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border: 1px solid #999;
+        .section-header { 
+            background: #bccabc; padding: 4px 10px; font-size: 12px; 
+            font-weight: bold; border: 1px solid var(--border-color);
         }
 
-        /* Área de Botões Responsiva */
-        .area-botoes {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 20px 10px;
-            align-items: center;
-            gap: 15px;
-        }
+        .display-area { min-height: 45px; background: white; padding: 10px; border: 1px solid var(--border-color); }
 
-        .coluna { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            flex: 1;
-            min-width: 140px; 
+        /* Botões Estilo Original */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 30px 10px;
+            justify-items: center;
             align-items: center;
         }
 
-        .btn-ponto {
-            width: 100%;
-            max-width: 180px;
-            height: 60px;
+        .btn-col { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 180px; }
+
+        .btn {
+            height: 65px;
+            border: 1px solid #000;
             font-weight: bold;
-            border: 1px solid #444;
+            font-size: 13px;
             cursor: pointer;
-            box-shadow: 2px 2px 0px #888;
-            border-radius: 4px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: translate(1px, 1px); box-shadow: none; }
+
+        .amarelo { background-color: var(--btn-amarelo); }
+        .vermelho { background-color: var(--btn-vermelho); }
+        .ciano { background-color: var(--btn-ciano); }
+        
+        .btn-limpa {
+            width: 100px; height: 100px; background: white;
+            border: 1px solid #000; font-weight: bold;
         }
 
-        .amarelo { background-color: #ffff66; }
-        .vermelho { background-color: #ff5050; }
-        .ciano { background-color: #66ffff; }
-        .btn-limpa { 
-            background-color: white; 
-            width: 80px; 
-            height: 80px; 
-            font-weight: bold; 
-            border-radius: 50%;
-            border: 1px solid #444;
-            cursor: pointer;
+        footer { 
+            margin-top: auto; padding: 10px; text-align: right; 
+            font-size: 11px; font-weight: bold; 
         }
 
-        #status-frequencia {
-            text-align: center;
-            color: #ff0000;
-            font-weight: bold;
-            font-size: 20px;
-            margin: 10px 0;
-            min-height: 25px;
-            text-transform: uppercase;
-        }
-
-        footer {
-            padding: 10px;
-            text-align: right;
-            font-size: 11px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        /* MEDIA QUERIES PARA CELULAR */
-        @media (max-width: 600px) {
-            header { justify-content: center; text-align: center; }
-            .titulo-principal { font-size: 16px; width: 100%; }
-            
-            /* Transforma tabela em lista no mobile */
-            .tabela-servidor, .tabela-servidor tbody, .tabela-servidor tr, .tabela-servidor td {
-                display: block;
-                width: 100%;
-            }
-            .tabela-servidor td { border: none; border-bottom: 1px solid #b0c4b0; }
-            .label-cinza { width: 100%; background-color: #cbdacb; }
-            
-            .relogio-container { border: none; border-bottom: 2px solid #555; }
-            
-            .area-botoes { padding-bottom: 60px; } /* Espaço para o footer */
-            .btn-ponto { height: 50px; }
+        /* Responsividade Mobile */
+        @media (max-width: 650px) {
+            header { grid-template-columns: 1fr; gap: 10px; }
+            .ip-info { text-align: center; }
+            .relogio-bar { grid-template-columns: 1fr; }
+            .button-grid { grid-template-columns: 1fr 1fr; }
+            .btn-limpa { grid-column: span 2; width: 80%; height: 50px; margin: 0 auto; }
+            .label { width: 80px; font-size: 10px; }
         }
     </style>
 </head>
 <body>
 
-<div id="monitor-virtual">
+<div id="sistema-container">
     <header>
-        <div class="logo-box">
-            <div class="brasao-frame">
-                <img src="images/1.png" alt="Logo">
-            </div>
-            <div class="texto-topo">PREFEITURA<br>DE GOIÂNIA</div>
+        <div class="logo-area">
+            <div class="logo-placeholder">BRASÃO<br>GOIÂNIA</div>
+            <div style="line-height: 1.2; font-size: 13px; font-weight: bold;">PREFEITURA<br>DE GOIÂNIA</div>
         </div>
-        <div class="titulo-principal">Registro de Frequência</div>
-        <div style="font-weight: bold; font-size: 13px;">10.10.57.110</div>
+        <div class="header-title">Registro Eletrônico de Frequência</div>
+        <div class="ip-info">10.10.57.110</div>
     </header>
 
-    <div class="relogio-container">
-        <span id="data-v">04/02/2026</span>
-        <span id="hora-v">00:00:00</span>
+    <div class="relogio-bar">
+        <div class="empty-space">
+            <table class="info-table" style="border: none;">
+                <tr>
+                    <td class="label">Matrícula</td>
+                    <td style="border-right: none;"><input type="text" id="mat-input" autofocus></td>
+                </tr>
+            </table>
+        </div>
+        <div class="clock-box">
+            <span id="data-v">03/02/2026</span>
+            <span id="hora-v">07:32:36</span>
+        </div>
     </div>
 
-    <table class="tabela-servidor">
+    <table class="info-table">
         <tr>
-            <td class="label-cinza">Matrícula</td>
-            <td><input type="text" id="mat-input" autofocus onkeypress="handleEnter(event)"></td>
-            <td class="label-cinza">Contrato</td>
-            <td id="c-contrato"></td>
+            <td class="label">Nome</td><td id="res-nome" colspan="3"></td>
         </tr>
-        <tr><td class="label-cinza">Nome</td><td id="c-nome" colspan="3"></td></tr>
-        <tr><td class="label-cinza">Órgão</td><td id="c-orgao" colspan="3"></td></tr>
-        <tr><td class="label-cinza">Lotação</td><td id="c-lotacao"></td><td class="label-cinza">Código</td><td id="c-codigo"></td></tr>
-        <tr><td class="label-cinza">Jornada</td><td id="c-jornada" colspan="3"></td></tr>
+        <tr>
+            <td class="label">Órgão</td><td id="res-orgao" colspan="3"></td>
+        </tr>
+        <tr>
+            <td class="label">Lotação</td><td id="res-lotacao"></td>
+            <td class="label" style="width: 80px;">Código</td><td id="res-codigo"></td>
+        </tr>
+        <tr>
+            <td class="label">Jornada</td><td id="res-jornada" colspan="3"></td>
+        </tr>
     </table>
 
-    <div class="faixa-divisor">Último Registro</div>
-    <div id="ultimo-log" style="min-height: 40px; padding: 10px; font-size: 14px; background: #fdfdfd;"></div>
+    <div class="section-header">Último Registro</div>
+    <div class="display-area" id="log-registro"></div>
 
-    <div class="faixa-divisor">Registro Atual</div>
-    <div id="status-frequencia"></div>
-    
-    <div class="area-botoes">
-        <div class="coluna">
-            <button class="btn-ponto amarelo" onclick="registrar('Entrada Normal')">Entrada Normal</button>
-            <button class="btn-ponto amarelo" onclick="registrar('Saída Normal')">Saída Normal</button>
+    <div class="section-header">Registro Atual</div>
+    <div class="display-area" style="text-align: center; color: red; font-weight: bold; font-size: 18px;" id="status-msg"></div>
+
+    <div class="button-grid">
+        <div class="btn-col">
+            <button class="btn amarelo" onclick="baterPonto('Entrada Normal')">Entrada Normal</button>
+            <button class="btn amarelo" onclick="baterPonto('Saída Normal')">Saída Normal</button>
         </div>
-        <div class="coluna">
-            <button class="btn-ponto vermelho" onclick="registrar('Entrada Serviço')">Entrada Serviço</button>
-            <button class="btn-ponto vermelho" onclick="registrar('Saída Serviço')">Saída Serviço</button>
+        <div class="btn-col">
+            <button class="btn vermelho" onclick="baterPonto('Entrada Serviço')">Entrada Serviço</button>
+            <button class="btn vermelho" onclick="baterPonto('Saída Serviço')">Saída Serviço</button>
         </div>
-        <div class="coluna">
-            <button class="btn-ponto ciano" onclick="registrar('Entrada Lanche')">Entrada Lanche</button>
-            <button class="btn-ponto ciano" onclick="registrar('Saída Lanche')">Saída Lanche</button>
+        <div class="btn-col">
+            <button class="btn ciano" onclick="baterPonto('Entrada Lanche')">Entrada Lanche</button>
+            <button class="btn ciano" onclick="baterPonto('Saída Lanche')">Saída Lanche</button>
         </div>
-        <div class="coluna">
-            <button class="btn-limpa" onclick="limpar()">Limpa</button>
-        </div>
+        <button class="btn btn-limpa" onclick="limpar()">Limpa</button>
     </div>
 
     <footer>Versão 1.3.0002 SICTEC</footer>
 </div>
 
 <script>
-    // Relógio
-    function clock() {
-        const n = new Date();
-        document.getElementById('data-v').innerText = n.toLocaleDateString('pt-BR');
-        document.getElementById('hora-v').innerText = n.toLocaleTimeString('pt-BR');
+    // Relógio em tempo real
+    function atualizarRelogio() {
+        const agora = new Date();
+        document.getElementById('data-v').innerText = agora.toLocaleDateString('pt-BR');
+        document.getElementById('hora-v').innerText = agora.toLocaleTimeString('pt-BR');
     }
-    setInterval(clock, 1000);
-    clock();
+    setInterval(atualizarRelogio, 1000);
+    atualizarRelogio();
 
-    // Função Enter
-    function handleEnter(e) {
-        if (e.key === 'Enter') {
-            registrar('Entrada Normal');
-        }
-    }
-
-    function registrar(tipo) {
+    function baterPonto(tipo) {
         const mat = document.getElementById('mat-input').value;
-        if (!mat) return;
+        if(!mat) {
+            alert("Por favor, insira a matrícula.");
+            return;
+        }
 
-        document.getElementById('c-nome').innerText = "SERVIDOR REGISTRADO";
-        document.getElementById('c-orgao').innerText = "PREFEITURA DE GOIANIA";
-        document.getElementById('c-lotacao').innerText = "UNIDADE PADRÃO";
-        document.getElementById('c-jornada').innerText = "40 HORAS";
-        document.getElementById('c-contrato').innerText = "1";
-        document.getElementById('c-codigo').innerText = "001";
+        // Simulação de preenchimento
+        document.getElementById('res-nome').innerText = "NOME DO SERVIDOR EXEMPLO";
+        document.getElementById('res-orgao').innerText = "SECRETARIA MUNICIPAL DE GOIÂNIA";
+        document.getElementById('res-lotacao').innerText = "GERÊNCIA DE TECNOLOGIA";
+        document.getElementById('res-codigo').innerText = "404";
+        document.getElementById('res-jornada').innerText = "8 HORAS DIÁRIAS";
 
         const hora = new Date().toLocaleTimeString('pt-BR');
-        document.getElementById('ultimo-log').innerText = `${tipo} - ${hora}`;
+        document.getElementById('log-registro').innerText = `${tipo} realizado com sucesso às ${hora}`;
         
-        const status = document.getElementById('status-frequencia');
-        status.innerText = "Frequência registrada";
-        
-        setTimeout(() => { status.innerText = ""; }, 4000);
+        const status = document.getElementById('status-msg');
+        status.innerText = "REGISTRO EFETUADO!";
+        setTimeout(() => status.innerText = "", 3000);
     }
 
     function limpar() {
         document.getElementById('mat-input').value = "";
-        document.getElementById('status-frequencia').innerText = "";
-        document.getElementById('ultimo-log').innerText = "";
-        ['c-nome','c-orgao','c-lotacao','c-jornada','c-contrato','c-codigo'].forEach(id => {
-            document.getElementById(id).innerText = "";
-        });
+        document.querySelectorAll('[id^="res-"]').forEach(el => el.innerText = "");
+        document.getElementById('log-registro').innerText = "";
+        document.getElementById('status-msg').innerText = "";
+        document.getElementById('mat-input').focus();
     }
+
+    // Suporte ao Enter no input de matrícula
+    document.getElementById('mat-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') baterPonto('Entrada Normal');
+    });
 </script>
 
 </body>
