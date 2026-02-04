@@ -275,18 +275,18 @@
         if (!mat) return;
 
         // Simulação de preenchimento idêntico ao original
-        document.getElementById('c-nome').innerText = "SERVIDOR EXEMPLO GOIANIA";
+        document.getElementById('c-nome').innerText = "NOME COMPLETO";
         document.getElementById('c-orgao').innerText = "PREFEITURA DE GOIANIA";
-        document.getElementById('c-lotacao').innerText = "DIRETORIA DE TECNOLOGIA";
+        document.getElementById('c-lotacao').innerText = "GERÊNCIA DE VETORES";
         document.getElementById('c-jornada').innerText = "40 HORAS SEMANAIS";
         document.getElementById('c-contrato').innerText = "1";
-        document.getElementById('c-codigo').innerText = "2024";
+        document.getElementById('c-codigo').innerText = "2026";
 
         const hora = new Date().toLocaleTimeString('pt-BR');
         document.getElementById('ultimo-log').innerText = `${tipo} - ${hora}`;
         
         const status = document.getElementById('status-frequencia');
-        status.innerText = "Frequência registrada com sucesso";
+        status.innerText = "Frequência registrada";
         
         setTimeout(() => { status.innerText = ""; }, 3500);
     }
