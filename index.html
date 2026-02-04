@@ -150,15 +150,20 @@
         .vermelho { background-color: var(--btn-vermelho); }
         .ciano { background-color: var(--btn-ciano); }
         
+        /* ALTERAÇÃO SOLICITADA: Botão Limpa Quadrado */
         .btn-limpa { 
             background-color: white; 
-            width: 90px; height: 90px; 
+            width: 100%;
+            max-width: 180px;
+            height: 60px; 
             font-weight: bold; 
-            border-radius: 50%;
+            border-radius: 3px;
             border: 1px solid #333;
             cursor: pointer;
+            box-shadow: 2px 2px 0px #666;
             align-self: center;
         }
+        .btn-limpa:active { transform: translate(1px, 1px); box-shadow: none; }
 
         #status-frequencia {
             text-align: center;
@@ -178,7 +183,8 @@
             .faixa-superior { flex-direction: column; }
             .relogio-container { width: 100%; border-left: none; border-top: 1px solid var(--border-color); }
             .area-botoes { grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 80px; }
-            .btn-limpa { grid-column: span 2; width: 60px; height: 60px; }
+            /* Ajuste para o botão limpa ocupar espaço correto no mobile mantendo-se quadrado */
+            .btn-limpa { grid-column: span 2; width: 100%; max-width: 100%; height: 60px; }
             .label-cinza { width: 90px; font-size: 11px; }
         }
     </style>
