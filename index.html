@@ -11,27 +11,32 @@
             background-color: #222;
             display: flex;
             justify-content: center;
-            padding-top: 10px;
+            padding: 10px;
         }
 
         #monitor-virtual {
-            width: 1024px;
+            width: 100%;
+            max-width: 1024px; /* Mantém o tamanho original em telas grandes */
             background-color: #d8e5d8;
             border: 1px solid #555;
             min-height: 650px;
             position: relative;
             box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Cabeçalho */
+        /* Cabeçalho Responsivo */
         header {
             background-color: #3d8c5a; 
             color: white;
             padding: 10px 15px;
             display: flex;
+            flex-wrap: wrap; /* Permite quebra de linha no mobile */
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #2d6a44;
+            gap: 10px;
         }
 
         .logo-box {
@@ -44,11 +49,12 @@
             background-color: white;
             padding: 5px;
             border-radius: 4px;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .brasao-frame img {
@@ -56,10 +62,10 @@
             max-height: 100%;
         }
 
-        .texto-topo { font-weight: bold; font-size: 15px; line-height: 1.1; }
-        .titulo-principal { font-size: 20px; font-weight: bold; text-transform: uppercase; }
+        .texto-topo { font-weight: bold; font-size: 14px; line-height: 1.1; }
+        .titulo-principal { font-size: 18px; font-weight: bold; text-transform: uppercase; text-align: center; }
 
-        /* Tabela */
+        /* Tabela Adaptável */
         .tabela-servidor {
             width: 100%;
             border-collapse: collapse;
@@ -68,16 +74,17 @@
 
         .tabela-servidor td {
             border: 1px solid #b0c4b0;
-            padding: 6px 10px;
+            padding: 8px 10px;
             font-size: 13px;
         }
 
-        .label-cinza { background-color: #e6f0e6; width: 110px; }
+        .label-cinza { background-color: #d1dfd1; width: 110px; font-weight: bold; }
         
         input[type="text"] {
             border: 1px solid #555;
-            padding: 3px;
-            width: 160px;
+            padding: 5px;
+            width: 100%; /* Ocupa o espaço da célula */
+            max-width: 160px;
             font-weight: bold;
             background-color: #fff;
         }
@@ -85,65 +92,102 @@
         /* Relógio */
         .relogio-container {
             background-color: #5ed3f3;
-            width: 200px;
+            width: 100%;
             text-align: center;
             color: #003366;
-            border-left: 1px solid #b0c4b0;
+            padding: 10px;
         }
 
-        #hora-atual { font-size: 28px; font-weight: 900; display: block; }
+        #hora-v { font-size: 28px; font-weight: 900; display: block; }
+        #data-v { font-size: 16px; font-weight: bold; }
 
         /* Divisores */
         .faixa-divisor {
             background-color: #bccabc;
-            padding: 3px 10px;
+            padding: 5px 10px;
             font-size: 12px;
             font-weight: bold;
             border: 1px solid #999;
         }
 
-        /* Botões */
+        /* Área de Botões Responsiva */
         .area-botoes {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-around;
-            padding: 30px 20px;
+            padding: 20px 10px;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .coluna { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            flex: 1;
+            min-width: 140px; 
             align-items: center;
         }
 
-        .coluna { display: flex; flex-direction: column; gap: 20px; }
-
         .btn-ponto {
-            width: 160px;
-            height: 70px;
+            width: 100%;
+            max-width: 180px;
+            height: 60px;
             font-weight: bold;
             border: 1px solid #444;
             cursor: pointer;
             box-shadow: 2px 2px 0px #888;
+            border-radius: 4px;
         }
 
         .amarelo { background-color: #ffff66; }
         .vermelho { background-color: #ff5050; }
         .ciano { background-color: #66ffff; }
-        .btn-limpa { background-color: white; width: 100px; height: 100px; font-weight: bold; }
+        .btn-limpa { 
+            background-color: white; 
+            width: 80px; 
+            height: 80px; 
+            font-weight: bold; 
+            border-radius: 50%;
+            border: 1px solid #444;
+            cursor: pointer;
+        }
 
-        /* MENSAGEM DE SUCESSO EM VERMELHO - O PONTO CHAVE */
         #status-frequencia {
             text-align: center;
             color: #ff0000;
             font-weight: bold;
-            font-size: 22px;
-            margin-top: 10px;
-            height: 30px;
+            font-size: 20px;
+            margin: 10px 0;
+            min-height: 25px;
             text-transform: uppercase;
         }
 
         footer {
-            position: absolute;
-            bottom: 5px;
-            right: 15px;
+            padding: 10px;
+            text-align: right;
             font-size: 11px;
             font-weight: bold;
             color: #333;
+        }
+
+        /* MEDIA QUERIES PARA CELULAR */
+        @media (max-width: 600px) {
+            header { justify-content: center; text-align: center; }
+            .titulo-principal { font-size: 16px; width: 100%; }
+            
+            /* Transforma tabela em lista no mobile */
+            .tabela-servidor, .tabela-servidor tbody, .tabela-servidor tr, .tabela-servidor td {
+                display: block;
+                width: 100%;
+            }
+            .tabela-servidor td { border: none; border-bottom: 1px solid #b0c4b0; }
+            .label-cinza { width: 100%; background-color: #cbdacb; }
+            
+            .relogio-container { border: none; border-bottom: 2px solid #555; }
+            
+            .area-botoes { padding-bottom: 60px; } /* Espaço para o footer */
+            .btn-ponto { height: 50px; }
         }
     </style>
 </head>
@@ -157,31 +201,34 @@
             </div>
             <div class="texto-topo">PREFEITURA<br>DE GOIÂNIA</div>
         </div>
-        <div class="titulo-principal">Registro Eletrônico de Frequência</div>
+        <div class="titulo-principal">Registro de Frequência</div>
         <div style="font-weight: bold; font-size: 13px;">10.10.57.110</div>
     </header>
+
+    <div class="relogio-container">
+        <span id="data-v">04/02/2026</span>
+        <span id="hora-v">00:00:00</span>
+    </div>
 
     <table class="tabela-servidor">
         <tr>
             <td class="label-cinza">Matrícula</td>
-            <td style="width: 200px;"><input type="text" id="mat-input" autofocus onkeypress="handleEnter(event)"></td>
+            <td><input type="text" id="mat-input" autofocus onkeypress="handleEnter(event)"></td>
             <td class="label-cinza">Contrato</td>
             <td id="c-contrato"></td>
-            <td rowspan="4" class="relogio-container">
-                <span id="data-v">04/02/2026</span>
-                <span id="hora-v">00:00:00</span>
-            </td>
         </tr>
         <tr><td class="label-cinza">Nome</td><td id="c-nome" colspan="3"></td></tr>
         <tr><td class="label-cinza">Órgão</td><td id="c-orgao" colspan="3"></td></tr>
         <tr><td class="label-cinza">Lotação</td><td id="c-lotacao"></td><td class="label-cinza">Código</td><td id="c-codigo"></td></tr>
-        <tr><td class="label-cinza">Jornada</td><td id="c-jornada" colspan="3"></td><td style="background:none; border:none"></td></tr>
+        <tr><td class="label-cinza">Jornada</td><td id="c-jornada" colspan="3"></td></tr>
     </table>
 
-    <div class="faixa-divisor">Ultimo Registro</div>
-    <div id="ultimo-log" style="height: 40px; padding: 10px; font-size: 14px; background: #fdfdfd;"></div>
+    <div class="faixa-divisor">Último Registro</div>
+    <div id="ultimo-log" style="min-height: 40px; padding: 10px; font-size: 14px; background: #fdfdfd;"></div>
 
     <div class="faixa-divisor">Registro Atual</div>
+    <div id="status-frequencia"></div>
+    
     <div class="area-botoes">
         <div class="coluna">
             <button class="btn-ponto amarelo" onclick="registrar('Entrada Normal')">Entrada Normal</button>
@@ -195,10 +242,10 @@
             <button class="btn-ponto ciano" onclick="registrar('Entrada Lanche')">Entrada Lanche</button>
             <button class="btn-ponto ciano" onclick="registrar('Saída Lanche')">Saída Lanche</button>
         </div>
-        <button class="btn-limpa" onclick="limpar()">Limpa</button>
+        <div class="coluna">
+            <button class="btn-limpa" onclick="limpar()">Limpa</button>
+        </div>
     </div>
-
-    <div id="status-frequencia"></div>
 
     <footer>Versão 1.3.0002 SICTEC</footer>
 </div>
@@ -216,7 +263,7 @@
     // Função Enter
     function handleEnter(e) {
         if (e.key === 'Enter') {
-            registrar('Entrada Normal'); // Assume entrada normal no Enter
+            registrar('Entrada Normal');
         }
     }
 
@@ -224,7 +271,6 @@
         const mat = document.getElementById('mat-input').value;
         if (!mat) return;
 
-        // Simulação de Dados
         document.getElementById('c-nome').innerText = "SERVIDOR REGISTRADO";
         document.getElementById('c-orgao').innerText = "PREFEITURA DE GOIANIA";
         document.getElementById('c-lotacao').innerText = "UNIDADE PADRÃO";
@@ -232,15 +278,12 @@
         document.getElementById('c-contrato').innerText = "1";
         document.getElementById('c-codigo').innerText = "001";
 
-        // Atualiza Logs
         const hora = new Date().toLocaleTimeString('pt-BR');
         document.getElementById('ultimo-log').innerText = `${tipo} - ${hora}`;
         
-        // EXIBE A MENSAGEM EM VERMELHO
         const status = document.getElementById('status-frequencia');
         status.innerText = "Frequência registrada";
         
-        // Limpa a mensagem após 4 segundos para a próxima batida
         setTimeout(() => { status.innerText = ""; }, 4000);
     }
 
