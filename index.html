@@ -3,234 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coletor - Sistema de Frequência</title>
+    <title>Coletor - Registro Eletrônico de Frequência</title>
     <style>
-        /* RESET BÁSICO PARA PARECER SISTEMA ANTIGO */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Estilo Reset para simular sistema legado */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #333; /* Fundo escuro para destacar o monitor */
             display: flex;
             justify-content: center;
+            padding-top: 20px;
         }
 
-        #sistema-container {
-            width: 100%;
-            max-width: 1200px;
-            background-color: #d8e5d8; /* Verde acinzentado do fundo */
-            border: 1px solid #777;
-            min-height: 100vh;
+        #monitor-virtual {
+            width: 1024px;
+            background-color: #d8e5d8; /* Verde acinzentado da interface */
+            border: 2px solid #000;
+            min-height: 600px;
             position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* CABEÇALHO VERDE IGUAL À FOTO */
+        /* Cabeçalho Verde Oficial */
         header {
             background-color: #3d8c5a; 
             color: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #2d6a44;
         }
 
-        .logo-area {
+        .logo-box {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* O QUADRADO BRANCO DO BRASÃO */
-        .brasao-container {
+        /* Onde sua imagem 1.png vai aparecer */
+        .brasao-frame {
             background-color: white;
-            padding: 5px;
+            padding: 4px;
             border-radius: 4px;
+            width: 75px;
+            height: 75px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 70px;
-            height: 70px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
 
-        .brasao-container img {
-            width: 100%;
-            height: auto;
+        .brasao-frame img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
-        .texto-prefeitura {
+        .texto-topo {
             font-weight: bold;
-            font-size: 16px;
-            line-height: 1.2;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            font-size: 15px;
+            line-height: 1.1;
         }
 
-        .titulo-central {
-            font-size: 20px;
+        .titulo-principal {
+            font-size: 22px;
             font-weight: bold;
             text-transform: uppercase;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
         }
 
-        /* TABELA DE DADOS */
-        .tabela-dados {
+        /* Tabela de Informações */
+        .tabela-servidor {
             width: 100%;
             border-collapse: collapse;
             background-color: #e6f0e6;
         }
 
-        .tabela-dados td {
+        .tabela-servidor td {
             border: 1px solid #b0c4b0;
-            padding: 5px 10px;
+            padding: 6px 10px;
             font-size: 13px;
-            height: 30px;
+            color: #111;
         }
 
-        .label { font-weight: normal; color: #333; width: 100px; }
-        .input-mat { border: 1px solid #555; width: 150px; padding: 2px; font-weight: bold; }
+        .label-cinza { background-color: #e6f0e6; width: 110px; }
+        
+        input[type="text"] {
+            border: 1px solid #666;
+            padding: 3px;
+            width: 160px;
+            font-weight: bold;
+            outline: none;
+        }
 
-        /* RELÓGIO AZUL */
-        .celula-relogio {
+        /* Bloco do Relógio (Azul Ciano) */
+        .relogio-container {
             background-color: #5ed3f3;
-            width: 200px;
+            width: 220px;
             text-align: center;
             color: #003366;
-            vertical-align: middle;
+            border-left: 1px solid #b0c4b0;
         }
 
-        /* BOTÕES COLORIDOS */
-        .container-botoes {
-            padding: 40px;
+        #hora-atual {
+            font-size: 32px;
+            font-weight: 900;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Seções Separadoras */
+        .faixa-divisor {
+            background-color: #bccabc;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border-top: 1px solid #999;
+            border-bottom: 1px solid #999;
+        }
+
+        /* Grid de Botões */
+        .area-botoes {
             display: flex;
             justify-content: space-around;
+            padding: 40px 20px;
             align-items: center;
         }
 
-        .par-botoes {
+        .coluna {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
 
-        .btn {
-            width: 150px;
-            height: 70px;
+        .btn-ponto {
+            width: 170px;
+            height: 75px;
             font-weight: bold;
+            font-size: 14px;
             border: 1px solid #444;
             cursor: pointer;
-            box-shadow: 2px 2px 0px #888;
+            box-shadow: 3px 3px 0px #888;
+            transition: all 0.1s;
         }
+
+        .btn-ponto:active { transform: translate(2px, 2px); box-shadow: none; }
 
         .amarelo { background-color: #ffff66; }
         .vermelho { background-color: #ff5050; }
-        .azul-claro { background-color: #66ffff; }
-        .branco-limpa { background-color: #ffffff; width: 100px; height: 100px; }
-
-        .secao-nome {
-            background-color: #bccabc;
-            padding: 2px 10px;
-            font-size: 11px;
-            border: 1px solid #99a;
+        .ciano { background-color: #66ffff; }
+        
+        .btn-limpa {
+            background-color: white;
+            width: 110px;
+            height: 110px;
+            border: 1px solid #444;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px #888;
         }
 
         footer {
             position: absolute;
-            bottom: 5px;
+            bottom: 8px;
             right: 15px;
-            font-size: 11px;
-            color: #444;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
 <body>
 
-<div id="sistema-container">
+<div id="monitor-virtual">
     <header>
-        <div class="logo-area">
-            <div class="brasao-container">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bras%C3%A3o_de_Goi%C3%A2nia.svg/512px-Bras%C3%A3o_de_Goi%C3%A2nia.svg.png" alt="Logo">
+        <div class="logo-box">
+            <div class="brasao-frame">
+                <img src="images/1.png" alt="Brasão Goiânia">
             </div>
-            <div class="texto-prefeitura">
+            <div class="texto-topo">
                 PREFEITURA<br>DE GOIÂNIA
             </div>
         </div>
-        <div class="titulo-central">Registro Eletrônico de Frequência</div>
-        <div style="font-size: 12px; font-weight: bold;">10.10.57.110</div>
+        <div class="titulo-principal">Registro Eletrônico de Frequência</div>
+        <div style="font-weight: bold; font-size: 14px;">10.10.57.110</div>
     </header>
 
-    <table class="tabela-dados">
+    <table class="tabela-servidor">
         <tr>
-            <td class="label">Matrícula</td>
-            <td><input type="text" id="campo-mat" class="input-mat"></td>
-            <td class="label">Contrato</td>
-            <td id="out-contrato"></td>
-            <td rowspan="4" class="celula-relogio">
-                <div id="data-v" style="font-size: 14px;">04/02/2026</div>
-                <div id="hora-v" style="font-size: 26px; font-weight: 900; margin-top: 5px;">05:39:00</div>
+            <td class="label-cinza">Matrícula</td>
+            <td style="width: 200px;"><input type="text" id="matricula-in" autofocus></td>
+            <td class="label-cinza" style="width: 80px;">Contrato</td>
+            <td id="res-contrato" style="width: 100px;"></td>
+            <td rowspan="4" class="relogio-container">
+                <span id="data-atual" style="font-size: 15px;">04/02/2026</span>
+                <span id="hora-atual">00:00:00</span>
             </td>
         </tr>
         <tr>
-            <td class="label">Nome</td><td id="out-nome" colspan="3"></td>
+            <td class="label-cinza">Nome</td>
+            <td id="res-nome" colspan="3"></td>
         </tr>
         <tr>
-            <td class="label">Órgão</td><td id="out-orgao" colspan="3"></td>
+            <td class="label-cinza">Órgão</td>
+            <td id="res-orgao" colspan="3"></td>
         </tr>
         <tr>
-            <td class="label">Lotação</td><td id="out-lotacao"></td>
-            <td class="label">Código</td><td id="out-codigo"></td>
+            <td class="label-cinza">Lotação</td>
+            <td id="res-lotacao"></td>
+            <td class="label-cinza">Código</td>
+            <td id="res-codigo"></td>
         </tr>
         <tr>
-            <td class="label">Jornada</td><td id="out-jornada" colspan="3"></td>
-            <td style="background: transparent; border: none;"></td>
+            <td class="label-cinza">Jornada</td>
+            <td id="res-jornada" colspan="3"></td>
+            <td style="background: #d8e5d8; border: none;"></td>
         </tr>
     </table>
 
-    <div class="secao-nome">Ultimo Registro</div>
-    <div id="log" style="padding: 10px; height: 40px; background: #f9f9f9; font-size: 13px;"></div>
+    <div class="faixa-divisor">Ultimo Registro</div>
+    <div id="display-msg" style="height: 45px; padding: 12px; font-size: 14px; color: #d00; font-weight: bold; background: #fdfdfd;"></div>
 
-    <div class="secao-nome">Registro Atual</div>
-    <div class="container-botoes">
-        <div class="par-botoes">
-            <button class="btn amarelo" onclick="bater('Entrada Normal')">Entrada Normal</button>
-            <button class="btn amarelo" onclick="bater('Saída Normal')">Saída Normal</button>
+    <div class="faixa-divisor">Registro Atual</div>
+    <div class="area-botoes">
+        <div class="coluna">
+            <button class="btn-ponto amarelo" onclick="registrar('Entrada Normal')">Entrada Normal</button>
+            <button class="btn-ponto amarelo" onclick="registrar('Saída Normal')">Saída Normal</button>
         </div>
-        <div class="par-botoes">
-            <button class="btn vermelho" onclick="bater('Entrada Serviço')">Entrada Serviço</button>
-            <button class="btn vermelho" onclick="bater('Saída Serviço')">Saída Serviço</button>
+        <div class="coluna">
+            <button class="btn-ponto vermelho" onclick="registrar('Entrada Serviço')">Entrada Serviço</button>
+            <button class="btn-ponto vermelho" onclick="registrar('Saída Serviço')">Saída Serviço</button>
         </div>
-        <div class="par-botoes">
-            <button class="btn azul-claro" onclick="bater('Entrada Lanche')">Entrada Lanche</button>
-            <button class="btn azul-claro" onclick="bater('Saída Lanche')">Saída Lanche</button>
+        <div class="coluna">
+            <button class="btn-ponto ciano" onclick="registrar('Entrada Lanche')">Entrada Lanche</button>
+            <button class="btn-ponto ciano" onclick="registrar('Saída Lanche')">Saída Lanche</button>
         </div>
-        <button class="btn branco-limpa" onclick="reset()">Limpa</button>
+        <button class="btn-limpa" onclick="limpar()">Limpa</button>
     </div>
 
     <footer>Versão 1.3.0002 SICTEC</footer>
 </div>
 
 <script>
-    // RELÓGIO
-    function timer() {
-        const d = new Date();
-        document.getElementById('data-v').innerHTML = d.toLocaleDateString('pt-BR');
-        document.getElementById('hora-v').innerHTML = d.toLocaleTimeString('pt-BR');
+    // Relógio em tempo real
+    function atualizarRelogio() {
+        const agora = new Date();
+        document.getElementById('data-atual').textContent = agora.toLocaleDateString('pt-BR');
+        document.getElementById('hora-atual').textContent = agora.toLocaleTimeString('pt-BR');
     }
-    setInterval(timer, 1000);
-    timer();
+    setInterval(atualizarRelogio, 1000);
+    atualizarRelogio();
 
-    // AÇÃO DOS BOTÕES
-    function bater(tipo) {
-        const m = document.getElementById('campo-mat').value;
-        if(!m) return alert("Digite a matrícula!");
+    // Banco de dados simulado
+    const db = {
+        "123": { nome: "SERVIDOR DA SAUDE", orgao: "SECRETARIA MUNICIPAL DE SAUDE", lotacao: "GOIANIA", jornada: "40H", contrato: "1", codigo: "10" }
+    };
+
+    function registrar(tipo) {
+        const mat = document.getElementById('matricula-in').value;
+        if (!mat) {
+            alert("Informe a matrícula para continuar.");
+            return;
+        }
         
-        document.getElementById('log').innerHTML = `<b>${tipo}</b> registrado com sucesso para matrícula ${m}`;
-        document.getElementById('out-nome').innerText = "SERVIDOR TESTE GOIÂNIA";
+        const serv = db[mat] || { nome: "FUNCIONÁRIO NÃO ENCONTRADO", orgao: "---", lotacao: "---", jornada: "---", contrato: "0", codigo: "0" };
+        
+        document.getElementById('res-nome').innerText = serv.nome;
+        document.getElementById('res-orgao').innerText = serv.orgao;
+        document.getElementById('res-lotacao').innerText = serv.lotacao;
+        document.getElementById('res-jornada').innerText = serv.jornada;
+        document.getElementById('res-contrato').innerText = serv.contrato;
+        document.getElementById('res-codigo').innerText = serv.codigo;
+
+        document.getElementById('display-msg').innerHTML = `REGISTRO DE [${tipo}] EFETUADO ÀS ${new Date().toLocaleTimeString()}`;
     }
 
-    function reset() {
-        document.getElementById('campo-mat').value = "";
-        document.getElementById('log').innerText = "";
-        document.getElementById('out-nome').innerText = "";
+    function limpar() {
+        document.getElementById('matricula-in').value = "";
+        document.getElementById('display-msg').innerHTML = "";
+        const ids = ['res-nome', 'res-orgao', 'res-lotacao', 'res-jornada', 'res-contrato', 'res-codigo'];
+        ids.forEach(id => document.getElementById(id).innerText = "");
     }
 </script>
 
