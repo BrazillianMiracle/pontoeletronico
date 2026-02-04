@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coletor - Sistema de Frequência</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #sistema-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #d4e0d4; /* Tom de fundo esverdeado claro da imagem */
+            border: 1px solid #888;
+            min-height: 100vh;
+        }
+
+        /* Cabeçalho Verde */
+        header {
+            background-color: #388e3c;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2e7d32;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            margin-right: 10px;
+            border-radius: 5px; /* Simulação do brasão */
+        }
+
+        .titulo-header h1 {
+            font-size: 18px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* Tabela de Dados do Servidor */
+        .dados-servidor {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #e8f5e9;
+        }
+
+        .dados-servidor td {
+            border: 1px solid #b2dfdb;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .label {
+            width: 100px;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .input-matricula {
+            width: 150px;
+            border: 1px solid #777;
+            padding: 2px;
+        }
+
+        /* Painel de Data e Hora (Canto Direito) */
+        .relogio-container {
+            background-color: #4fc3f7;
+            text-align: center;
+            padding: 10px;
+            color: #0d47a1;
+            font-weight: bold;
+            width: 180px;
+        }
+
+        /* Área de Registro Atual (Botões Coloridos) */
+        .registro-container {
+            margin-top: 20px;
+            border: 1px solid #999;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) 150px;
+            gap: 20px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .coluna-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            width: 140px;
+            height: 60px;
+            border: 1px solid #666;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn-amarelo { background-color: #fff176; }
+        .btn-vermelho { background-color: #e57373; }
+        .btn-azul { background-color: #4dd0e1; }
+        .btn-limpa { 
+            background-color: white; 
+            height: 100px; 
+            width: 100px;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        /* Rodapé */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 1200px;
+            text-align: right;
+            padding: 5px;
+            font-size: 11px;
+            color: #555;
+        }
+
+        .barra-ultimo-registro {
+            background-color: #f5f5f5;
+            border: 1px solid #999;
+            margin: 10px;
+            padding: 5px;
+            font-size: 12px;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="sistema-container">
+    <header>
+        <div class="logo-area">
+            <div class="logo-placeholder"></div>
+            <div>
+                <strong style="font-size: 14px;">PREFEITURA</strong><br>
+                <span style="font-size: 14px;">DE GOIÂNIA</span>
+            </div>
+        </div>
+        <div class="titulo-header">
+            <h1>Registro Eletrônico de Frequência</h1>
+        </div>
+        <div style="font-size: 12px;">10.10.57.110</div>
+    </header>
+
+    <table class="dados-servidor">
+        <tr>
+            <td class="label">Matrícula</td>
+            <td><input type="text" id="matricula" class="input-matricula"></td>
+            <td class="label">Contrato</td>
+            <td id="res-contrato"></td>
+            <td rowspan="4" class="relogio-container">
+                <div id="data-atual">00/00/0000</div>
+                <div id="hora-atual" style="font-size: 20px; margin-top: 10px;">00:00:00</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Nome</td>
+            <td id="res-nome"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Órgão</td>
+            <td id="res-orgao"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Lotação</td>
+            <td id="res-lotacao"></td>
+            <td class="label">Código</td>
+            <td id="res-codigo"></td>
+        </tr>
+        <tr>
+            <td class="label">Jornada</td>
+            <td id="res-jornada"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div style="font-size: 12px; margin: 10px;">Ultimo Registro</div>
+    <div class="barra-ultimo-registro" id="ultimo-registro-box"></div>
+
+    <div style="font-size: 12px; margin: 10px;">Registro Atual</div>
+    <div class="registro-container">
+        <div class="coluna-botoes">
+            <button class="btn-amarelo" onclick="registrar('Entrada Normal')">Entrada Normal</button>
+            <button class="btn-amarelo" onclick="registrar('Saída Normal')">Saída Normal</button>
+        </div>
+        <div class="coluna-botoes">
+            <button class="btn-vermelho" onclick="registrar('Entrada Serviço')">Entrada Serviço</button>
+            <button class="btn-vermelho" onclick="registrar('Saída Serviço')">Saída Serviço</button>
+        </div>
+        <div class="coluna-botoes">
+            <button class="btn-azul" onclick="registrar('Entrada Lanche')">Entrada Lanche</button>
+            <button class="btn-azul" onclick="registrar('Saída Lanche')">Saída Lanche</button>
+        </div>
+        <button class="btn-limpa" onclick="limpar()">Limpa</button>
+    </div>
+
+    <footer>
+        Versão 1.3.0002 SICTEC
+    </footer>
+</div>
+
+<script>
+    // Atualização do Relógio Real-Time
+    function atualizarRelogio() {
+        const agora = new Date();
+        const data = agora.toLocaleDateString('pt-BR');
+        const hora = agora.toLocaleTimeString('pt-BR');
+        
+        document.getElementById('data-atual').innerText = data;
+        document.getElementById('hora-atual').innerText = hora;
+    }
+    setInterval(atualizarRelogio, 1000);
+    atualizarRelogio();
+
+    // Simulação de Banco de Dados de Servidores
+    const servidores = {
+        "123456": {
+            nome: "JOSE DA SILVA",
+            orgao: "SECRETARIA MUNICIPAL DE SAUDE",
+            lotacao: "DISTRITO SANITARIO SUL",
+            jornada: "40 HORAS",
+            contrato: "1",
+            codigo: "882"
+        }
+    };
+
+    // Função para registrar o ponto
+    function registrar(tipo) {
+        const mat = document.getElementById('matricula').value;
+        if (!mat) {
+            alert("Por favor, digite a matrícula!");
+            return;
+        }
+
+        const servidor = servidores[mat];
+        if (servidor) {
+            // Preenche os campos
+            document.getElementById('res-nome').innerText = servidor.nome;
+            document.getElementById('res-orgao').innerText = servidor.orgao;
+            document.getElementById('res-lotacao').innerText = servidor.lotacao;
+            document.getElementById('res-jornada').innerText = servidor.jornada;
+            document.getElementById('res-contrato').innerText = servidor.contrato;
+            document.getElementById('res-codigo').innerText = servidor.codigo;
+
+            // Simula o registro
+            const agora = new Date().toLocaleTimeString('pt-BR');
+            document.getElementById('ultimo-registro-box').innerText = 
+                `${tipo} realizado com sucesso às ${agora} para ${servidor.nome}`;
+            
+            alert(`Registro de ${tipo} confirmado!`);
+        } else {
+            alert("Matrícula não encontrada (Tente 123456)");
+        }
+    }
+
+    // Função Limpar
+    function limpar() {
+        document.getElementById('matricula').value = "";
+        document.getElementById('res-nome').innerText = "";
+        document.getElementById('res-orgao').innerText = "";
+        document.getElementById('res-lotacao').innerText = "";
+        document.getElementById('res-jornada').innerText = "";
+        document.getElementById('res-contrato').innerText = "";
+        document.getElementById('res-codigo').innerText = "";
+        document.getElementById('ultimo-registro-box').innerText = "";
+    }
+</script>
+
+</body>
+</html>
